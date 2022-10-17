@@ -24,6 +24,9 @@ public class Order extends BaseTimeEntity{
     @NotBlank
     private String email;
 
+    @NotBlank
+    private String address;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -38,10 +41,12 @@ public class Order extends BaseTimeEntity{
     @Builder
     public Order(
             String email,
+            String address,
             User user,
             OrderStatus status
     ) {
         this.email = email;
+        this.address = address;
         this.user = user;
         this.status = status;
     }

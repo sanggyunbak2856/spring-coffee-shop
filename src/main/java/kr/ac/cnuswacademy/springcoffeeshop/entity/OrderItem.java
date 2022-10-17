@@ -1,6 +1,7 @@
 package kr.ac.cnuswacademy.springcoffeeshop.entity;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_items")
 @NoArgsConstructor
+@Getter
 public class OrderItem extends BaseTimeEntity{
 
     @Id
