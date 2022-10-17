@@ -1,6 +1,7 @@
 package kr.ac.cnuswacademy.springcoffeeshop.service;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserListResponseDto;
+import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -11,9 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -27,7 +30,7 @@ class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Test
-    void 전체_유저_목록을_불러온다 () {
+    void 유저를_전체조회한다 () {
         // given
         User user1 = User.builder()
                 .email("helloworld@gmail.com")
@@ -51,5 +54,21 @@ class UserServiceImplTest {
         assertThat(all.get(1)).usingRecursiveComparison().isEqualTo(responseDto2);
     }
 
+    @Test
+    void 유저를_단건조회한다 () {
+        // given
+        User user = User.builder()
+                .email("helloworld@gmail.com")
+                .password("1234")
+                .build();
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(user));
 
+        // when
+        UserResponseDto responseDto = userService.findById(1L);
+
+        // then
+        then(userRepository).should().findById(any(Long.class));
+        assertThat(responseDto.getEmail()).isEqualTo(user.getEmail());
+        assertThat(responseDto.getPassword()).isEqualTo(user.getPassword());
+    }
 }
