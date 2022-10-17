@@ -1,7 +1,10 @@
 package kr.ac.cnuswacademy.springcoffeeshop.service;
 
+import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserResponseDto;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -70,5 +73,31 @@ class UserServiceImplTest {
         then(userRepository).should().findById(any(Long.class));
         assertThat(responseDto.getEmail()).isEqualTo(user.getEmail());
         assertThat(responseDto.getPassword()).isEqualTo(user.getPassword());
+    }
+
+    @Test
+    void 유저_단건_조회시_주문_목록을_확인할_수_있다 () {
+        // given
+        User user = User.builder()
+                .email("helloworld@gmail.com")
+                .password("1234")
+                .build();
+        Order order = Order.builder()
+                .email("helloworld@gmail.com")
+                .status(OrderStatus.PREPARING)
+                .build();
+        user.addOrder(order);
+        OrderListResponseDto orderListResponseDto = new OrderListResponseDto(order);
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(user));
+
+        // when
+        UserResponseDto responseDto = userService.findById(1L);
+
+        // then
+        then(userRepository).should().findById(any(Long.class));
+        assertThat(responseDto.getOrderListResponseDtoList()).hasSize(1);
+        assertThat(responseDto.getOrderListResponseDtoList().get(0))
+                .usingRecursiveComparison()
+                .isEqualTo(orderListResponseDto);
     }
 }
