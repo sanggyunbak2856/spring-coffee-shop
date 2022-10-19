@@ -9,13 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserUpdateRequestDto {
+public class UserSaveRequestDto {
 
     private String email;
     private String password;
 
     @Builder
-    public UserUpdateRequestDto(String email, String password) {
+    public UserSaveRequestDto(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -1,9 +1,7 @@
 package kr.ac.cnuswacademy.springcoffeeshop.service;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
-import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserListResponseDto;
-import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserResponseDto;
-import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserUpdateRequestDto;
+import kr.ac.cnuswacademy.springcoffeeshop.dto.user.*;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +9,29 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
+    @Override
+    public Long insert(UserSaveRequestDto requestDto) {
+        User save = userRepository.save(requestDto.toEntity());
+        return save.getId();
+    }
+
+    @Override
+    public Boolean login(UserLoginRequestDto requestDto) {
+        boolean isCorrect = false;
+        Optional<User> user = userRepository.findUserByEmail(requestDto.getEmail());
+        if (user.isPresent()) {
+            isCorrect = user.get().getPassword().equals(requestDto.getPassword());
+        }
+        return isCorrect;
+    }
 
     @Override
     @Transactional
