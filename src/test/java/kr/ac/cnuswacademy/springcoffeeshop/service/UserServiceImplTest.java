@@ -2,6 +2,7 @@ package kr.ac.cnuswacademy.springcoffeeshop.service;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserListResponseDto;
+import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserLoginRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
@@ -99,5 +100,47 @@ class UserServiceImplTest {
         assertThat(responseDto.getOrderListResponseDtoList().get(0))
                 .usingRecursiveComparison()
                 .isEqualTo(orderListResponseDto);
+    }
+
+    @Test
+    void 유저_로그인에_성공한다 () {
+        // given
+        User user = User.builder()
+                .email("helloworld@gmail.com")
+                .password("password")
+                .build();
+        UserLoginRequestDto requestDto = UserLoginRequestDto.builder()
+                .email("helloworld@gmail.com")
+                .password("password")
+                .build();
+        given(userRepository.findUserByEmail(any(String.class))).willReturn(Optional.of(user));
+
+        // when
+        Boolean isLogin = userService.login(requestDto);
+
+        // then
+        then(userRepository).should().findUserByEmail(any(String.class));
+        assertThat(isLogin).isTrue();
+    }
+
+    @Test
+    void 유저_로그인에_실패한다 () {
+        // given
+        User user = User.builder()
+                .email("helloworld@gmail.com")
+                .password("password")
+                .build();
+        UserLoginRequestDto requestDto = UserLoginRequestDto.builder()
+                .email("helloworld2@gmail.com")
+                .password("password1")
+                .build();
+        given(userRepository.findUserByEmail(any(String.class))).willReturn(Optional.of(user));
+
+        // when
+        Boolean isLogin = userService.login(requestDto);
+
+        // then
+        then(userRepository).should().findUserByEmail(any(String.class));
+        assertThat(isLogin).isFalse();
     }
 }
