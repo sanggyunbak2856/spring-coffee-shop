@@ -64,9 +64,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public Long update(Long id, UserUpdateRequestDto requestDto) {
+    public Long update(Long id, UserUpdateRequestDto requestDto) throws IllegalArgumentException{
         User user = userRepository.findById(id).orElseThrow(() -> {
-            return new IllegalArgumentException("해당 id의 유저가 없습니다.");
+            throw new IllegalArgumentException("해당 id의 유저가 없습니다.");
         });
         user.setEmail(requestDto.getEmail());
         user.setPassword(requestDto.getPassword());
