@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    public Long insert(UserSaveRequestDto requestDto);
+    public Long save(UserSaveRequestDto requestDto);
     public Boolean login(UserLoginRequestDto requestDto);
     public List<UserListResponseDto> findAll();
 

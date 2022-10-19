@@ -18,7 +18,11 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     @Override
-    public Long insert(UserSaveRequestDto requestDto) {
+    public Long save(UserSaveRequestDto requestDto) throws IllegalArgumentException{
+        Optional<User> user = userRepository.findUserByEmail(requestDto.getEmail());
+        if (user.isPresent()) {
+            throw new IllegalArgumentException("해당 이메일을 사용하는 유저가 이미 존재합니다.");
+        }
         User save = userRepository.save(requestDto.toEntity());
         return save.getId();
     }
