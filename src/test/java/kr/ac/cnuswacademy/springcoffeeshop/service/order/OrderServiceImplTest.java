@@ -123,7 +123,6 @@ class OrderServiceImplTest {
     void 주문을_저장한다() {
         // given
         OrderSaveRequestDto orderSaveRequestDto = new OrderSaveRequestDto();
-        orderSaveRequestDto.setOrderStatus(OrderStatus.PREPARING.toString());
         orderSaveRequestDto.setUserId(1L);
         Order order = orderSaveRequestDto.toEntity();
         given(userRepository.findById(any(Long.class))).willReturn(Optional.of(user));
