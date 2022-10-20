@@ -3,6 +3,7 @@ package kr.ac.cnuswacademy.springcoffeeshop.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,18 +22,23 @@ public class Product extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Setter
     @NotBlank
     private String name;
 
+    @Setter
     @NotNull
     private int price;
 
+    @Setter
     @NotNull
     private int quantity;
 
+    @Setter
     @NotBlank
     private String description;
 
