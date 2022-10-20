@@ -1,5 +1,6 @@
 package kr.ac.cnuswacademy.springcoffeeshop.entity;
 
+import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +61,11 @@ public class Order extends BaseTimeEntity{
 
     public void addOrderItem(OrderItem orderItem) {
         orderItem.setOrder(this);
+    }
+
+    public void update(OrderUpdateRequestDto requestDto) {
+        this.address = requestDto.getAddress();
+        this.status = OrderStatus.valueOf(requestDto.getOrderStatus());
     }
 
 }

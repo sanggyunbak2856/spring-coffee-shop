@@ -72,12 +72,19 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Long update(Long id, OrderUpdateRequestDto requestDto) {
-        return null;
+    @Transactional
+    // 수정 필요 (오더 아이템 수정 기능 추가해야함)
+    public Long update(Long id, OrderUpdateRequestDto requestDto) throws IllegalArgumentException{
+        Order order = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문이 없습니다"));
+        order.update(requestDto);
+        return order.getId();
     }
 
     @Override
     public Long delete(Long id) {
-        return null;
+        orderRepository.deleteById(id);
+        return id;
     }
 }
