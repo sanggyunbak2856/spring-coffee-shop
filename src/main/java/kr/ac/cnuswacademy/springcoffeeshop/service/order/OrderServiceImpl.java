@@ -41,8 +41,16 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderResponseDto findByUser(Long id) {
-        return null;
+    public OrderResponseDto findByUser(Long id) throws IllegalArgumentException {
+        Order order = orderRepository.findOrderByUser(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 id의 유저가 없습니다");
+        });
+        List<OrderItemListResponseDto> orderItemListResponseDtoList = order
+                .getOrderItems()
+                .stream()
+                .map(OrderItemListResponseDto::new)
+                .toList();
+        return new OrderResponseDto(order, orderItemListResponseDtoList);
     }
 
     @Override
