@@ -36,4 +36,10 @@ public class OrderApiController {
         }
         return ResponseEntity.ok(id);
     }
+
+    @DeleteMapping("/api/v1/order/{orderId}")
+    public ResponseEntity<Long> deleteOrder(@PathVariable Long orderId) {
+        orderService.delete(orderId);
+        return ResponseEntity.ok(orderId);
+    }
 }
