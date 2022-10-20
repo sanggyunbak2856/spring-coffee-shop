@@ -83,4 +83,33 @@ class OrderServiceImplTest {
                 .hasMessageContaining("해당 id의 주문이 없습니다");
         then(orderRepository).should().findById(any(Long.class));
     }
+
+    @Test
+    void 주문을_유저아이디로_단건_조회한다 () {
+        // given
+        Order order = Order
+                .builder()
+                .user(user)
+                .status(OrderStatus.PREPARING)
+                .build();
+        given(orderRepository.findOrderByUser(any(Long.class))).willReturn(Optional.of(order));
+
+        // when
+        OrderResponseDto responseDto = orderService.findByUser(1L);
+
+        // then
+        then(orderRepository).should().findOrderByUser(any(Long.class));
+    }
+
+    @Test
+    void 주문을_잘못된_유저아이디로_단건_조회한다 () {
+        // given
+        given(orderRepository.findOrderByUser(any(Long.class))).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> orderService.findByUser(1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("해당 id의 유저가 없습니다");
+        then(orderRepository).should().findOrderByUser(any(Long.class));
+    }
 }
