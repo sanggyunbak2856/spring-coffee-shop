@@ -83,7 +83,6 @@ class UserServiceImplTest {
                 .password("1234")
                 .build();
         Order order = Order.builder()
-                .email("helloworld@gmail.com")
                 .status(OrderStatus.PREPARING)
                 .build();
         user.addOrder(order);
