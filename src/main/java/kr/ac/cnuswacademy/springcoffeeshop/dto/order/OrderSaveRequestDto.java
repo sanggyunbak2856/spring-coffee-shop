@@ -18,7 +18,6 @@ import java.util.List;
 public class OrderSaveRequestDto {
     private String address;
     private Long userId;
-    private String orderStatus;
     private List<OrderItemSaveRequestDto> orderItems = new ArrayList<>();
 
     public Order toEntity() {
@@ -30,7 +29,7 @@ public class OrderSaveRequestDto {
         return Order
                 .builder()
                 .address(address)
-                .status(OrderStatus.valueOf(orderStatus))
+                .status(OrderStatus.PREPARING)
                 .orderItems(orderItemEntitys)
                 .build();
     }
