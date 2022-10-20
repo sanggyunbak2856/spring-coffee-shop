@@ -3,6 +3,7 @@ package kr.ac.cnuswacademy.springcoffeeshop.service.order;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderSaveRequestDto;
+import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderUpdateRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
@@ -134,5 +135,26 @@ class OrderServiceImplTest {
         // then
         then(orderRepository).should().save(any(Order.class));
         then(userRepository).should().findById(any(Long.class));
+    }
+
+    @Test
+    void 주문을_수정한다() {
+        // given
+        Order order = Order.builder()
+                .address("대전 유성구 궁동")
+                .status(OrderStatus.CANCELLED)
+                .build();
+        OrderUpdateRequestDto requestDto = new OrderUpdateRequestDto();
+        requestDto.setAddress("대전 대덕구 신탄진동");
+        requestDto.setOrderStatus(OrderStatus.PREPARING.toString());
+        given(orderRepository.findById(any(Long.class))).willReturn(Optional.of(order));
+
+        // when
+        orderService.update(1L, requestDto);
+
+        // then
+        then(orderRepository).should().findById(any(Long.class));
+        assertThat(order.getAddress()).isEqualTo("대전 대덕구 신탄진동");
+        assertThat(order.getStatus().toString()).isEqualTo(OrderStatus.PREPARING.toString());
     }
 }
