@@ -3,6 +3,7 @@ package kr.ac.cnuswacademy.springcoffeeshop.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,9 +22,11 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @NotBlank
+    @Setter
     private String email;
 
     @NotBlank
+    @Setter
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
