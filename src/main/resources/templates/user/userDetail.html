@@ -14,7 +14,7 @@
 </head>
 <body class="cntainer-fluid">
 <main>
-    <h2>유저 수정</h2>
+    <h2>유저 상세 조회</h2>
     <div class="container" style="width: 400px">
         <div class="mb-3">
             <label for="email" class="form-label">Id</label>
@@ -31,6 +31,31 @@
         <button type="button" id="btn-update" class="btn btn-primary">수정</button>
         <button type="button" id="btn-delete" class="btn btn-primary">삭제</button>
         <a href="/users" role="button" class="btn btn-secondary">취소</a>
+    </div>
+    <br>
+    <br>
+    <div class="container-fluid">
+        <h3>유저 주문 목록</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">address</th>
+                <th scope="col">order status</th>
+                <th scope="col">user email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order: ${user.getOrderListResponseDtoList()}" th:object="${order}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.address}"></td>
+                <td th:text="${order.orderStatus}"></td>
+                <td>
+                    <a th:href="@{/order/{id}(id=${order.id})}"  th:text="${order.userEmail}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" th:src="@{/js/user/user.js}"></script>
 </main>
