@@ -1,5 +1,6 @@
 package kr.ac.cnuswacademy.springcoffeeshop.entity;
 
+import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,6 @@ public class Order extends BaseTimeEntity{
 
     @NotBlank
     @Setter
-    private String email;
-
-    @NotBlank
-    @Setter
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,15 +40,15 @@ public class Order extends BaseTimeEntity{
 
     @Builder
     public Order(
-            String email,
             String address,
             User user,
-            OrderStatus status
+            OrderStatus status,
+            List<OrderItem> orderItems
     ) {
-        this.email = email;
         this.address = address;
         this.user = user;
         this.status = status;
+        this.orderItems = orderItems;
     }
 
     public void setUser(User user) {
@@ -64,6 +61,11 @@ public class Order extends BaseTimeEntity{
 
     public void addOrderItem(OrderItem orderItem) {
         orderItem.setOrder(this);
+    }
+
+    public void update(OrderUpdateRequestDto requestDto) {
+        this.address = requestDto.getAddress();
+        this.status = OrderStatus.valueOf(requestDto.getOrderStatus());
     }
 
 }

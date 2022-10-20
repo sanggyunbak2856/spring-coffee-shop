@@ -1,4 +1,4 @@
-package kr.ac.cnuswacademy.springcoffeeshop.service;
+package kr.ac.cnuswacademy.springcoffeeshop.service.user;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.*;

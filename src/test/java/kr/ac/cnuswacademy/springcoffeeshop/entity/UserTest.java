@@ -15,7 +15,6 @@ class UserTest {
         // given
         User user = User.builder().build();
         Order order = Order.builder()
-                .email("helloworld@gmail.com")
                 .user(user)
                 .status(OrderStatus.PREPARING)
                 .address("대전 유성구 궁동")
