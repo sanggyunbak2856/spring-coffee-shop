@@ -8,7 +8,7 @@ import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
-import org.assertj.core.api.Assertions;
+import kr.ac.cnuswacademy.springcoffeeshop.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;

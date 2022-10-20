@@ -4,7 +4,7 @@ import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserSaveRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.UserUpdateRequestDto;
-import kr.ac.cnuswacademy.springcoffeeshop.service.UserService;
+import kr.ac.cnuswacademy.springcoffeeshop.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
