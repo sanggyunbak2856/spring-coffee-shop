@@ -2,10 +2,12 @@ package kr.ac.cnuswacademy.springcoffeeshop.service.order;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderResponseDto;
+import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderSaveRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.OrderRepository;
+import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +31,9 @@ class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     private User user;
 
@@ -111,5 +116,23 @@ class OrderServiceImplTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("해당 id의 유저가 없습니다");
         then(orderRepository).should().findOrderByUser(any(Long.class));
+    }
+
+    @Test
+    void 주문을_저장한다() {
+        // given
+        OrderSaveRequestDto orderSaveRequestDto = new OrderSaveRequestDto();
+        orderSaveRequestDto.setOrderStatus(OrderStatus.PREPARING.toString());
+        orderSaveRequestDto.setUserId(1L);
+        Order order = orderSaveRequestDto.toEntity();
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(user));
+        given(orderRepository.save(any(Order.class))).willReturn(order);
+
+        // when
+        Long saved = orderService.save(orderSaveRequestDto);
+
+        // then
+        then(orderRepository).should().save(any(Order.class));
+        then(userRepository).should().findById(any(Long.class));
     }
 }
