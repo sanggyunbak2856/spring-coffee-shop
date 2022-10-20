@@ -1,5 +1,6 @@
 package kr.ac.cnuswacademy.springcoffeeshop.controller.api;
 
+import kr.ac.cnuswacademy.springcoffeeshop.dto.product.ProductListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.product.ProductResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.product.ProductSaveRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.product.ProductUpdateRequestDto;
@@ -40,4 +41,21 @@ public class ProductApiController {
         return ResponseEntity.ok(productId);
     }
 
+    @GetMapping("/api/v1/products")
+    public ResponseEntity<List<ProductListResponseDto>> productList() {
+        List<ProductListResponseDto> all = productService.findAll();
+        return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("/api/v1/product/{productId}")
+    public ResponseEntity<ProductResponseDto> product(@PathVariable Long productId) {
+        ProductResponseDto responseDto;
+        try {
+            responseDto = productService.findById(productId);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(responseDto);
+    }
 }
