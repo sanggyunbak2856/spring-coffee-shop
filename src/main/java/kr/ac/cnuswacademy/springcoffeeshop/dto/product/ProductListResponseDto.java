@@ -7,8 +7,8 @@ import lombok.Getter;
 public class ProductListResponseDto {
     private Long id;
     private String name;
-    private int price;
-    private int quantity;
+    private Long price;
+    private Long quantity;
 
     public ProductListResponseDto(Product product) {
         this.id = product.getId();

@@ -11,18 +11,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OrderItemSaveRequestDto {
-    private Long price;
     private Long quantity;
     private Long orderId;
     private Long productId;
-    public OrderItem toEntity(Order order, Product product) {
+    public OrderItem toEntity() {
 
         return OrderItem
                 .builder()
-                .price(price)
                 .quantity(quantity)
-                .order(order)
-                .product(product)
                 .build();
     }
 }

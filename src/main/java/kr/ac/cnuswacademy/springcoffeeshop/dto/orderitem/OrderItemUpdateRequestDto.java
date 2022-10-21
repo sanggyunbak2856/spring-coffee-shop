@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OrderItemUpdateRequestDto {
-    private Long price;
     private Long quantity;
 }

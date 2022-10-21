@@ -52,17 +52,23 @@ public class OrderItemServiceImpl implements OrderItemService{
 
     @Override
     @Transactional
-    public Long save(OrderItemSaveRequestDto requestDto) throws IllegalArgumentException{
+    public Long save(OrderItemSaveRequestDto requestDto) throws IllegalArgumentException {
         Order order = orderRepository
                 .findById(requestDto.getOrderId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문이 없습니다."));
         Product product = productRepository
                 .findById(requestDto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 상품이 없습니다"));
-        OrderItem orderItem = requestDto.toEntity(order, product);
+
+        if(product.getQuantity() < requestDto.getQuantity()) {
+            throw new IllegalArgumentException("상품의 수량보다 초과하여 주문할 수 없습니다.");
+        }
+
+        OrderItem orderItem = requestDto.toEntity();
         OrderItem savedOrderItem = orderItemRepository.save(orderItem);
         order.addOrderItem(savedOrderItem);
         product.addOrderItem(savedOrderItem);
+        product.setQuantity(product.getQuantity() - requestDto.getQuantity());
 
         return savedOrderItem.getId();
     }
@@ -73,7 +79,7 @@ public class OrderItemServiceImpl implements OrderItemService{
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 주문 아이템이 없습니다."));
         orderItem.update(requestDto);
-        return null;
+        return id;
     }
 
     @Override

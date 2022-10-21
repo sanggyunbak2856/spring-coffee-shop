@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductSaveRequestDto {
     private String name;
-    private int price;
-    private int quantity;
+    private Long price;
+    private Long quantity;
     private String description;
 
     public Product toEntity() {

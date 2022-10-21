@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductUpdateRequestDto {
     private String name;
-    private int price;
-    private int quantity;
+    private Long price;
+    private Long quantity;
     private String description;
 }
