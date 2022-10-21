@@ -2,6 +2,9 @@ package kr.ac.cnuswacademy.springcoffeeshop.service.user;
 
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.user.*;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.OrderStatus;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.Product;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +79,21 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public Long deleteById(Long id) {
-
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 유저가 없습니다"));
+        List<Order> orders = user.getOrders()
+                .stream()
+                .filter(order -> !order.getStatus().equals(OrderStatus.PREPARING))
+                .toList();
+        orders.forEach(order -> {
+            order.getOrderItems().forEach(
+                    orderItem -> {
+                        Product product = orderItem.getProduct();
+                        product.setQuantity(product.getQuantity() + orderItem.getQuantity());
+                    }
+            );
+        });
         userRepository.deleteById(id);
         return id;
     }
