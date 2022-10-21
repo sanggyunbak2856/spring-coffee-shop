@@ -1,5 +1,6 @@
 package kr.ac.cnuswacademy.springcoffeeshop.entity;
 
+가import kr.ac.cnuswacademy.springcoffeeshop.dto.orderitem.OrderItemUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,5 +60,10 @@ public class OrderItem extends BaseTimeEntity{
         }
         this.product = product;
         product.getOrderItems().add(this);
+    }
+
+    public void update(OrderItemUpdateRequestDto requestDto) {
+        this.price = requestDto.getPrice();
+        this.quantity = requestDto.getQuantity();
     }
 }
