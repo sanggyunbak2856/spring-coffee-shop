@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService{
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 유저가 없습니다"));
         Order order = requestDto.toEntity();
-        order.setUser(user);
+        user.addOrder(order);
         Order saved = orderRepository.save(order);
         return saved.getId();
     }
