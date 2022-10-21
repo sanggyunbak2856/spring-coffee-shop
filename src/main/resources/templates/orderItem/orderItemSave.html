@@ -14,21 +14,24 @@
 </head>
 <body class="cntainer-fluid">
 <main>
-    <h2>주문 추가</h2>
+    <h2>주문 아이템 추가</h2>
     <div class="container" style="width: 400px">
         <div class="mb-3">
-            <label for="address" class="form-label">address</label>
-            <input type="text" class="form-control" th:field="${order.address}" id="address">
+            <label for="quantity" class="form-label">quantity</label>
+            <input type="number" class="form-control" th:field="${orderItem.quantity}" id="quantity">
         </div>
         <div class="mb-3">
-            <label for="userId" class="form-label">user id</label>
-            <input type="text" class="form-control" th:field="${order.userId}" id="userId">
+            <label for="orderId" class="form-label">order id</label>
+            <input type="text" class="form-control" th:field="${orderItem.orderId}" id="orderId">
         </div>
-        <hr>
+        <div class="mb-3">
+            <label for="productId" class="form-label">product id</label>
+            <input type="text" class="form-control" th:field="${orderItem.productId}" id="productId">
+        </div>
         <button type="button" id="btn-save" class="btn btn-primary">추가</button>
         <a href="/orders" role="button" class="btn btn-secondary">취소</a>
     </div>
-    <script type="text/javascript" th:src="@{/js/order/order.js}"></script>
+    <script type="text/javascript" th:src="@{/js/orderitem/orderitem.js}"></script>
 </main>
 </body>
 </html>

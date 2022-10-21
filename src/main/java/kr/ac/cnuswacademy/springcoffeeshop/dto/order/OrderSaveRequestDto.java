@@ -21,16 +21,10 @@ public class OrderSaveRequestDto {
     private List<OrderItemSaveRequestDto> orderItems = new ArrayList<>();
 
     public Order toEntity() {
-        List<OrderItem> orderItemEntitys = orderItems
-                .stream()
-                .map(OrderItemSaveRequestDto::toEntity)
-                .toList();
-
         return Order
                 .builder()
                 .address(address)
                 .status(OrderStatus.PREPARING)
-                .orderItems(orderItemEntitys)
                 .build();
     }
 }

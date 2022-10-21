@@ -6,6 +6,7 @@ import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderSaveRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderUpdateRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.orderitem.OrderItemListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.Product;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.OrderRepository;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
@@ -48,16 +49,13 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     @Transactional
-    public OrderResponseDto findByUser(Long id) throws IllegalArgumentException {
-        Order order = orderRepository.findOrderByUser(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("해당 id의 유저가 없습니다");
-        });
-        List<OrderItemListResponseDto> orderItemListResponseDtoList = order
-                .getOrderItems()
+    public List<OrderListResponseDto> findByUser(Long id) throws IllegalArgumentException {
+        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 없습니다."));
+        List<OrderListResponseDto> responseDtos = orderRepository
+                .findOrderByUser(id)
                 .stream()
-                .map(OrderItemListResponseDto::new)
-                .toList();
-        return new OrderResponseDto(order, orderItemListResponseDtoList);
+                .map(OrderListResponseDto::new).toList();
+        return responseDtos;
     }
 
     @Override
@@ -66,7 +64,7 @@ public class OrderServiceImpl implements OrderService{
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 유저가 없습니다"));
         Order order = requestDto.toEntity();
-        order.setUser(user);
+        user.addOrder(order);
         Order saved = orderRepository.save(order);
         return saved.getId();
     }
@@ -84,6 +82,17 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Long delete(Long id) {
+        Order order = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문이 없습니다"));
+        if(order.getStatus().toString().equals("PREPARING")) {
+            order.getOrderItems().forEach(
+                    orderItem -> {
+                        Product product = orderItem.getProduct();
+                        product.setQuantity(product.getQuantity() + orderItem.getQuantity());
+                    }
+            );
+        }
         orderRepository.deleteById(id);
         return id;
     }

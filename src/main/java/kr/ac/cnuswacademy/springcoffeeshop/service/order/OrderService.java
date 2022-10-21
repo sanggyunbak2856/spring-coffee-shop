@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderService {
     public List<OrderListResponseDto> findAll();
     public OrderResponseDto findById(Long id);
-    public OrderResponseDto findByUser(Long id);
+    public List<OrderListResponseDto> findByUser(Long id);
     public Long save(OrderSaveRequestDto requestDto);
     public Long update(Long id, OrderUpdateRequestDto requestDto);
     public Long delete(Long id);

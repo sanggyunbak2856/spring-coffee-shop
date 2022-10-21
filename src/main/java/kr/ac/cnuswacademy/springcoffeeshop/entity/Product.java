@@ -32,11 +32,11 @@ public class Product extends BaseTimeEntity{
 
     @Setter
     @NotNull
-    private int price;
+    private Long price;
 
     @Setter
     @NotNull
-    private int quantity;
+    private Long quantity;
 
     @Setter
     @NotBlank
@@ -45,8 +45,8 @@ public class Product extends BaseTimeEntity{
     @Builder
     public Product (
             String name,
-            int price,
-            int quantity,
+            Long price,
+            Long quantity,
             String description
     ) {
         this.name = name;

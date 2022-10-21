@@ -42,13 +42,11 @@ public class Order extends BaseTimeEntity{
     public Order(
             String address,
             User user,
-            OrderStatus status,
-            List<OrderItem> orderItems
+            OrderStatus status
     ) {
         this.address = address;
         this.user = user;
         this.status = status;
-        this.orderItems = orderItems;
     }
 
     public void setUser(User user) {

@@ -1,5 +1,6 @@
 package kr.ac.cnuswacademy.springcoffeeshop.entity;
 
+import kr.ac.cnuswacademy.springcoffeeshop.dto.orderitem.OrderItemUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,8 @@ public class OrderItem extends BaseTimeEntity{
 
     @Id
     @Column(name = "order_item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    private Long price;
 
     @NotNull
     private Long quantity;
@@ -34,12 +33,10 @@ public class OrderItem extends BaseTimeEntity{
 
     @Builder
     public OrderItem (
-            Long price,
             Long quantity,
             Order order,
             Product product
     ) {
-        this.price = price;
         this.quantity = quantity;
         this.order = order;
         this.product = product;
@@ -59,5 +56,9 @@ public class OrderItem extends BaseTimeEntity{
         }
         this.product = product;
         product.getOrderItems().add(this);
+    }
+
+    public void update(OrderItemUpdateRequestDto requestDto) {
+        this.quantity = requestDto.getQuantity();
     }
 }
