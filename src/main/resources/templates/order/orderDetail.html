@@ -38,12 +38,38 @@
                 <option value="SHIPPED">SHIPPED</option>
                 <option value="CANCELLED">CANCELLED</option>
             </select>
+            <button type="button" id="btn-update" class="btn btn-primary">수정</button>
+            <button type="button" id="btn-delete" class="btn btn-primary">삭제</button>
+            <a href="/orders" role="button" class="btn btn-secondary">취소</a>
         </div>
-        <hr>
-        <h1>추후에 주문 아이템 추가 필요함</h1>
-        <button type="button" id="btn-update" class="btn btn-primary">수정</button>
-        <button type="button" id="btn-delete" class="btn btn-primary">삭제</button>
-        <a href="/orders" role="button" class="btn btn-secondary">취소</a>
+    </div>
+    <div class="container-fluid">
+        <h3>주문 아이템 목록</h3>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/orderitem/save}" class="btn btn-primary me-md-2" type="button">추가</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">product name</th>
+                <th scope="col">quantity</th>
+                <th scope="col">order id</th>
+                <th scope="col">product id</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderItem : ${orderItemList}" th:object="${orderItem}">
+                <td th:text="${orderItem.id}"></td>
+                <td>
+                    <a th:href="@{/product/{id}(id=${orderItem.productId})}"  th:text="${orderItem.productName}"></a>
+                </td>
+                <td th:text="${orderItem.quantity}"></td>
+                <td th:text="${orderItem.orderId}"></td>
+                <td th:text="${orderItem.productId}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" th:src="@{/js/order/order.js}"></script>
 </main>
