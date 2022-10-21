@@ -60,25 +60,6 @@ class OrderItemServiceImplTest {
     }
 
     @Test
-    void 모든_주문_아이템_목록을_조회한다 () {
-        // given
-        OrderItem orderItem = OrderItem.builder()
-                .quantity(10L)
-                .build();
-        OrderItemResponseDto responseDto = new OrderItemResponseDto(orderItem);
-        order.addOrderItem(orderItem);
-        product.addOrderItem(orderItem);
-        given(orderItemRepository.findAll()).willReturn(List.of(orderItem));
-
-        // when
-        List<OrderItemListResponseDto> all = orderItemService.findAll();
-
-        // then
-        then(orderItemRepository).should().findAll();
-        assertThat(all.get(0).getQuantity()).isEqualTo(10L);
-    }
-
-    @Test
     void 주문_아이템을_저장한다 () {
         // given
         OrderItemSaveRequestDto requestDto = new OrderItemSaveRequestDto();

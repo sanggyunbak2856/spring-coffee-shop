@@ -48,16 +48,13 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     @Transactional
-    public OrderResponseDto findByUser(Long id) throws IllegalArgumentException {
-        Order order = orderRepository.findOrderByUser(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("해당 id의 유저가 없습니다");
-        });
-        List<OrderItemListResponseDto> orderItemListResponseDtoList = order
-                .getOrderItems()
+    public List<OrderListResponseDto> findByUser(Long id) throws IllegalArgumentException {
+        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 없습니다."));
+        List<OrderListResponseDto> responseDtos = orderRepository
+                .findOrderByUser(id)
                 .stream()
-                .map(OrderItemListResponseDto::new)
-                .toList();
-        return new OrderResponseDto(order, orderItemListResponseDtoList);
+                .map(OrderListResponseDto::new).toList();
+        return responseDtos;
     }
 
     @Override

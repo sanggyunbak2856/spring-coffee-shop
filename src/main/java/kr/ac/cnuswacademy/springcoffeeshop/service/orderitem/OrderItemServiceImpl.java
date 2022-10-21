@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,11 +44,13 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     @Override
-    public OrderItemResponseDto findByOrderId(Long id) throws IllegalArgumentException{
-        OrderItem orderItem = orderItemRepository
-                .findOrderItemByOrder(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문이 없습니다."));
-        return new OrderItemResponseDto(orderItem);
+    public List<OrderItemListResponseDto> findByOrderId(Long id) throws IllegalArgumentException{
+        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당하는 주문이 없습니다."));
+        return orderItemRepository
+                .findOrderItemByOrder(order)
+                .stream()
+                .map(OrderItemListResponseDto::new)
+                .toList();
     }
 
     @Override

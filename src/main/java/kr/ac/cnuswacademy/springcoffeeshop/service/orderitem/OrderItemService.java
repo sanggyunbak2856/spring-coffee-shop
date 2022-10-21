@@ -11,7 +11,7 @@ public interface OrderItemService {
 
     public List<OrderItemListResponseDto> findAll();
     public OrderItemResponseDto findById(Long id);
-    public OrderItemResponseDto findByOrderId(Long id);
+    public List<OrderItemListResponseDto> findByOrderId(Long id);
     public Long save(OrderItemSaveRequestDto requestDto);
     public Long update(Long id, OrderItemUpdateRequestDto requestDto);
     public Long delete(Long id);
