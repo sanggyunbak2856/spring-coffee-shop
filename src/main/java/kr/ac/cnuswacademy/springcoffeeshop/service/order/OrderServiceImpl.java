@@ -6,6 +6,7 @@ import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderSaveRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.order.OrderUpdateRequestDto;
 import kr.ac.cnuswacademy.springcoffeeshop.dto.orderitem.OrderItemListResponseDto;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.Order;
+import kr.ac.cnuswacademy.springcoffeeshop.entity.Product;
 import kr.ac.cnuswacademy.springcoffeeshop.entity.User;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.OrderRepository;
 import kr.ac.cnuswacademy.springcoffeeshop.repository.UserRepository;
@@ -81,6 +82,17 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Long delete(Long id) {
+        Order order = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문이 없습니다"));
+        if(order.getStatus().toString().equals("PREPARING")) {
+            order.getOrderItems().forEach(
+                    orderItem -> {
+                        Product product = orderItem.getProduct();
+                        product.setQuantity(product.getQuantity() + orderItem.getQuantity());
+                    }
+            );
+        }
         orderRepository.deleteById(id);
         return id;
     }
