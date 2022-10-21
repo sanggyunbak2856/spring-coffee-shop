@@ -49,4 +49,10 @@ public class OrderItemApiController {
         }
         return ResponseEntity.ok(id);
     }
+
+    @DeleteMapping("/api/v1/orderitem/{orderItemId}")
+    public ResponseEntity<Long> deleteOrderItem(@PathVariable Long orderItemId) {
+        orderItemService.delete(orderItemId);
+        return ResponseEntity.ok(orderItemId);
+    }
 }

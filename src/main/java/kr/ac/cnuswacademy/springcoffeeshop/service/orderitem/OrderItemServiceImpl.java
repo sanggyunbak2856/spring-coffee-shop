@@ -86,7 +86,13 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     @Override
+    @Transactional
     public Long delete(Long id) {
+        OrderItem orderItem = orderItemRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 주문 아이템이 없습니다."));
+        Product product = orderItem.getProduct();
+        product.setQuantity(product.getQuantity() + orderItem.getQuantity());
         orderItemRepository.deleteById(id);
         return id;
     }
