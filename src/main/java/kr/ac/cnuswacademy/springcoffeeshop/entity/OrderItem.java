@@ -17,6 +17,7 @@ public class OrderItem extends BaseTimeEntity{
 
     @Id
     @Column(name = "order_item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
